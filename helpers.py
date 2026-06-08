@@ -34,3 +34,22 @@ def random_login_password():
         }
     return payload
 
+
+faker = Faker()
+# Метод генерирования данных для нового заказа
+def generate_order_data(color=None):
+    data = {
+        "firstname": faker.first_name(),
+        "lastname": faker.last_name(),
+        "address" : faker.address(),
+        "metroStation" : random.randint(1, 20),
+        "phone" : faker.phone_number(),
+        "rentTime" : random.randint(1, 14),
+        "deliveryDate" : faker.date_between(start_date='today', end_date='+5d').isoformat(),
+        "comment" : faker.sentence()
+        }
+        
+    if color is not None:
+        data["color"] = color
+
+    return data
