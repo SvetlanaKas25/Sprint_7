@@ -25,3 +25,12 @@ def generate_new_courier_login_password_first_name():
     
     return payload
 
+
+# Метод для генерирования несуществующей пары логин-пароль
+def random_login_password():
+    payload = {
+        "login": generate_random_string(10),
+        "password": generate_random_string(10),
+        }
+    return payload
+
