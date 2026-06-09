@@ -1,6 +1,7 @@
 import pytest
 import allure
 
+from messages import NOT_ENOUGH_CREATE_DATA, LOGIN_ALREADY_IN_USE
 from api_methods.courier_methods import CourierMethods
 from helpers import generate_new_courier_login_password_first_name
 
@@ -23,10 +24,9 @@ class TestCreateCourier:
         courier_data = generate_new_courier_login_password_first_name()
         response1 = CourierMethods.create_courier(courier_data)
         response2 = CourierMethods.create_courier(courier_data)
-        response2_body = "Этот логин уже используется"
-
+        
         assert response2.status_code == 409, f"Ожидаемый статус код 409, но получили {response2.status_code}" 
-        assert response2.json()["message"] == response2_body
+        assert response2.json()["message"] == LOGIN_ALREADY_IN_USE
 
 
     @pytest.mark.parametrize("key,value", [
@@ -43,4 +43,4 @@ class TestCreateCourier:
         with allure.step(f"Попытка создания курьера с незаполненным полем: {key}"):
             response = CourierMethods.create_courier(courier_data)
         assert response.status_code == 400, f"Ожидаемый статус код 400, но получили {response.status_code}"
-        assert "Недостаточно данных для создания учетной записи" in response.json()["message"]
+        assert NOT_ENOUGH_CREATE_DATA in response.json()["message"]

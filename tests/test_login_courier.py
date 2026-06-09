@@ -1,6 +1,7 @@
 import pytest
 import allure
 
+from messages import NOT_ENOUGH_LOGIN_DATA, ACCOUNT_NOT_FOUND
 from api_methods.courier_methods import CourierMethods
 from helpers import random_login_password
 
@@ -29,7 +30,7 @@ class TestLoginCourier:
                 }
         response = CourierMethods.login_courier(body_without_login)
         assert response.status_code == 400, f"Ожидаемый статус код 400, но получили {response.status_code}"
-        assert "Недостаточно данных для входа" in response.json()["message"]
+        assert NOT_ENOUGH_LOGIN_DATA in response.json()["message"]
 
 
     @allure.title("Проверка обязательности поля password")
@@ -45,7 +46,7 @@ class TestLoginCourier:
                 }
         response = CourierMethods.login_courier(body_without_password)
         assert response.status_code == 400, f"Ожидаемый статус код 400, но получили {response.status_code}"
-        assert "Недостаточно данных для входа" in response.json()["message"]
+        assert NOT_ENOUGH_LOGIN_DATA in response.json()["message"]
 
 
 
@@ -56,7 +57,7 @@ class TestLoginCourier:
             data_courier = random_login_password()
         response = CourierMethods.login_courier(data_courier)
         assert response.status_code == 404, f"Ожидаемый статус код 404, но получили {response.status_code}"
-        assert "Учетная запись не найдена" in response.json()["message"]
+        assert ACCOUNT_NOT_FOUND in response.json()["message"]
 
 
     @pytest.mark.parametrize("key,value", [
@@ -72,5 +73,5 @@ class TestLoginCourier:
         with allure.step(f"Попытка авторизации курьера с неверным полем: {key}"):
             response = CourierMethods.login_courier(courier_data)
         assert response.status_code == 404, f"Ожидаемый статус код 404, но получили {response.status_code}"
-        assert "Учетная запись не найдена" in response.json()["message"]
+        assert ACCOUNT_NOT_FOUND in response.json()["message"]
         
