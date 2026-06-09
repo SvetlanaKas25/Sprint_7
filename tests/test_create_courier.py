@@ -23,10 +23,10 @@ class TestCreateCourier:
         courier_data = generate_new_courier_login_password_first_name()
         response1 = CourierMethods.create_courier(courier_data)
         response2 = CourierMethods.create_courier(courier_data)
-        response2_body = '{"message": "Этот логин уже используется"}'
+        response2_body = "Этот логин уже используется"
 
         assert response2.status_code == 409, f"Ожидаемый статус код 409, но получили {response2.status_code}" 
-        assert response2.json() == response2_body
+        assert response2.json()["message"] == response2_body
 
 
     @pytest.mark.parametrize("key,value", [

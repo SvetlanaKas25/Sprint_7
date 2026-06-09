@@ -13,7 +13,7 @@ class TestLoginCourier:
         data_courier = new_courier
         response = CourierMethods.login_courier(data_courier)
         assert response.status_code == 200, f"Ожидаемый статус код 200, но получили {response.status_code}"
-        assert 'id' in response.text 
+        assert 'id' in response.json() 
 
 
     @allure.title("Проверка обязательности поля login")
@@ -29,7 +29,7 @@ class TestLoginCourier:
                 }
         response = CourierMethods.login_courier(body_without_login)
         assert response.status_code == 400, f"Ожидаемый статус код 400, но получили {response.status_code}"
-        assert "Недостаточно данных для входа" in response.text
+        assert "Недостаточно данных для входа" in response.json()["message"]
 
 
     @allure.title("Проверка обязательности поля password")
@@ -45,7 +45,8 @@ class TestLoginCourier:
                 }
         response = CourierMethods.login_courier(body_without_password)
         assert response.status_code == 400, f"Ожидаемый статус код 400, но получили {response.status_code}"
-        assert "Недостаточно данных для входа" in response.text
+        assert "Недостаточно данных для входа" in response.json()["message"]
+
 
 
     @allure.title("Авторизация под несуществующим пользователем")
